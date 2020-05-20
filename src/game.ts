@@ -1,4 +1,5 @@
 import { Tile, tiles } from './tile'
+import { getMural } from './serverHandler'
 
 // Base scene
 const baseScene = new Entity()
@@ -8,10 +9,12 @@ engine.addEntity(baseScene)
 
 // For transforming the mural
 const scene = new Entity()
-scene.addComponent(new Transform({
-  position: new Vector3(8, 0, 8),
-  rotation: Quaternion.Euler(0, 0, 0)
-}))
+scene.addComponent(
+  new Transform({
+    position: new Vector3(8, 0, 8),
+    rotation: Quaternion.Euler(0, 0, 0),
+  })
+)
 engine.addEntity(scene)
 
 // Tile
@@ -46,4 +49,18 @@ for (let i = 0; i < MURAL_HEIGHT; i++) {
   }
   xPosition = START_POS_X
   yPosition -= TILE_SIZE + 0.02
+}
+
+updateMural()
+
+async function updateMural() {
+  let currentTiles = await getMural()
+
+  log(currentTiles)
+  for (let i = 0; i < currentTiles.length; i++) {
+    if (currentTiles[i] === null) {
+      continue
+    }
+    tiles[i].setColor(currentTiles[i])
+  }
 }
