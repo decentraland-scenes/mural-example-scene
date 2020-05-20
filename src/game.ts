@@ -6,6 +6,14 @@ baseScene.addComponent(new GLTFShape('models/baseScene.glb'))
 baseScene.addComponent(new Transform())
 engine.addEntity(baseScene)
 
+// For transforming the mural
+const scene = new Entity()
+scene.addComponent(new Transform({
+  position: new Vector3(8, 0, 8),
+  rotation: Quaternion.Euler(0, 0, 0)
+}))
+engine.addEntity(scene)
+
 // Tile
 const planeShape = new PlaneShape()
 planeShape.withCollisions = false
@@ -13,7 +21,7 @@ planeShape.withCollisions = false
 // Parameters for the mural
 const MURAL_WIDTH = 32
 const MURAL_HEIGHT = 16
-const START_POS_X = 3.69
+const START_POS_X = -3.69
 const START_POS_Y = 4.5
 const TILE_SIZE = 0.25
 
@@ -27,11 +35,12 @@ for (let i = 0; i < MURAL_HEIGHT; i++) {
     const tile = new Tile(
       planeShape,
       new Transform({
-        position: new Vector3(xPosition, yPosition, 8),
+        position: new Vector3(xPosition, yPosition, 0),
         scale: new Vector3(TILE_SIZE, TILE_SIZE, 1),
       }),
       tileIndex
     )
+    tile.setParent(scene)
     tileIndex = tiles.push(tile)
     xPosition += TILE_SIZE + 0.02 // Adding a small gap
   }
