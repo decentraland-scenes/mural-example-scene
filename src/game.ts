@@ -1,4 +1,4 @@
-import { Tile, tiles } from './tile'
+import { Tile, tiles, tileNumbers } from './tile'
 import { getMural } from './serverHandler'
 
 // Base scene
@@ -45,6 +45,7 @@ for (let i = 0; i < MURAL_HEIGHT; i++) {
     )
     tile.setParent(scene)
     tileIndex = tiles.push(tile)
+    tileNumbers.push(null)
     xPosition += TILE_SIZE + 0.02 // Adding a small gap
   }
   xPosition = START_POS_X
@@ -61,6 +62,7 @@ async function updateMural() {
     if (currentTiles[i] === null) {
       continue
     }
+    tileNumbers[i] = currentTiles[i]
     tiles[i].setColor(currentTiles[i])
   }
 }

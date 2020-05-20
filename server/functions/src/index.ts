@@ -15,10 +15,9 @@ app.get('/hello-world', (req: any, res: any) => {
 })
 
 app.post('/update-mural', async (req: any, res: any) => {
-  let color = Number(req.query.color)
-  let tile = Number(req.query.tile)
+  let tiles = req.body.tiles
 
-  updateMuralJSON(tile, color)
+  updateMuralJSON(tiles)
 
   return res.status(200).send('Updated Mural')
 })
@@ -44,15 +43,27 @@ AWS.config.update({
   region: 'us-east-2',
 })
 
-export async function updateMuralJSON(tile: number, color: number) {
-  let url = 'https://genesis-plaza.s3.us-east-2.amazonaws.com/mural/tiles.json'
+export async function updateMuralJSON(tiles: number[]) {
+  var upload = new AWS.S3.ManagedUpload({
+    params: {
+      Bucket: 'genesis-plaza',
+      Key: 'mural/tiles.json',
+      Body: JSON.stringify({ tiles: tiles }),
+      ACL: 'public-read',
+      ContentType: 'application/json; charset=utf-8',
+    },
+  })
 
-  let currentMural: number[] = await getMuralJSON(url)
-  console.log('old mural: ', currentMural)
+  var promise = upload.promise()
 
-  currentMural[tile] = color
-
-  uploadMuralData(currentMural)
+  promise.then(
+    function (data: any) {
+      console.log('Successfully uploaded mural JSON')
+    },
+    function (err: any) {
+      console.log('There was an error uploading mural json file: ', err.message)
+    }
+  )
 }
 
 export async function getMuralJSON(url: string): Promise<number[]> {
@@ -65,32 +76,4 @@ export async function getMuralJSON(url: string): Promise<number[]> {
     console.log('url used: ', url)
     return []
   }
-}
-
-export async function uploadMuralData(currentMural: number[]) {
-  console.log('uploading market data')
-
-  var upload = new AWS.S3.ManagedUpload({
-    params: {
-      Bucket: 'genesis-plaza',
-      Key: 'mural/tiles.json',
-      Body: JSON.stringify({ tiles: currentMural }),
-      ACL: 'public-read',
-      ContentType: 'application/json; charset=utf-8',
-    },
-  })
-
-  var promise = upload.promise()
-
-  promise.then(
-    function (data: any) {
-      console.log('Successfully uploaded market JSON')
-    },
-    function (err: any) {
-      console.log(
-        'There was an error uploading market json file: ',
-        err.message
-      )
-    }
-  )
 }
