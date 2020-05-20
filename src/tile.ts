@@ -12,7 +12,7 @@ const colors: Color3[] = [
   Color3.FromHexString('#006a7a'), // Blue
   Color3.FromHexString('#875a95'), // Purple
   Color3.FromHexString('#e86cd2'), // Pink
-  Color3.FromHexString('#181818'),
+  Color3.FromHexString('#181818'), // Black
 ]
 
 export class Tile extends Entity {
