@@ -18,8 +18,8 @@ scene.addComponent(
 engine.addEntity(scene)
 
 // Tile
-const planeShape = new PlaneShape()
-planeShape.withCollisions = false
+const boxShape = new BoxShape()
+boxShape.withCollisions = false
 
 // Parameters for the mural
 const MURAL_WIDTH = 32
@@ -36,10 +36,10 @@ let tileIndex = 0
 for (let i = 0; i < MURAL_HEIGHT; i++) {
   for (let j = 0; j < MURAL_WIDTH; j++) {
     const tile = new Tile(
-      planeShape,
+      boxShape,
       new Transform({
         position: new Vector3(xPosition, yPosition, 0),
-        scale: new Vector3(TILE_SIZE, TILE_SIZE, 1),
+        scale: new Vector3(TILE_SIZE, TILE_SIZE, 0.125),
       }),
       tileIndex
     )

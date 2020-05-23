@@ -19,20 +19,28 @@ const colors: Color3[] = [
   Color3.FromHexString('#222222'), // Black
 ]
 
+const materials: Material[] = []
+
+// Material setup
+for (let i = 0; i < colors.length; i++) {
+  const material = new Material()
+  material.albedoColor = colors[i]
+  material.metallic = 0.2
+  material.roughness = 1.0
+  materials.push(material)
+}
+
 export class Tile extends Entity {
   public color: Color3
-  public material: Material = new Material()
   private colorIndex: number = 0
   private tileIndex: number
 
-  constructor(model: PlaneShape, transform: Transform, tileIndex: number) {
+  constructor(model: BoxShape, transform: Transform, tileIndex: number) {
     super()
     engine.addEntity(this)
     this.addComponent(model)
     this.addComponent(transform)
-    this.addComponent(this.material)
-    this.material.albedoColor = colors[this.colorIndex]
-    this.material.roughness = 1
+    this.addComponent(materials[this.colorIndex])
 
     // Flip sound when changing tile color
     const sound = new Entity()
@@ -67,7 +75,7 @@ export class Tile extends Entity {
       ? (this.colorIndex = colorIndex + 1)
       : (this.colorIndex = 0)
 
-    this.material.albedoColor = colors[this.colorIndex]
+    this.addComponentOrReplace(materials[this.colorIndex])
   }
 }
 
