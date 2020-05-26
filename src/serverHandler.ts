@@ -1,7 +1,5 @@
 import { tileNumbers } from './tile'
-import { getRealm } from './realmData'
-
-export let playerRealm = 'localhost-stub' //getRealm()
+import { setRealm, playerRealm } from './realmData'
 
 export let awsServer = 'https://genesis-plaza.s3.us-east-2.amazonaws.com/'
 export let fireBaseServer =
@@ -11,7 +9,7 @@ export let fireBaseServer =
 export async function getMural(): Promise<number[]> {
   try {
     // if (!playerRealm) {
-    //   playerRealm = await getRealm()
+    //   await setRealm()
     // }
     let url = awsServer + 'mural/' + playerRealm + '/tiles.json'
     let response = await fetch(url).then()
@@ -26,7 +24,7 @@ export async function getMural(): Promise<number[]> {
 export async function changeMural() {
   try {
     // if (!playerRealm) {
-    //   playerRealm = await getRealm()
+    //   await setRealm()
     // }
     let url = fireBaseServer + 'update-mural?realm=' + playerRealm
     let body = JSON.stringify({ tiles: tileNumbers })
