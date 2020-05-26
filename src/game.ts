@@ -31,16 +31,18 @@ const TILE_SIZE = 0.25
 let xPosition = START_POS_X
 let yPosition = START_POS_Y
 let tileIndex = 0
-let isRed = true
+
+// For brick pattern
+// let isRed = true
 
 // Build mural
 for (let i = 0; i < MURAL_HEIGHT; i++) {
   for (let j = 0; j < MURAL_WIDTH; j++) {
-    // Default color pattern (brick)
-    let colorIndex: number
-    if (i % 2 != 0) isRed = !isRed
-    if (j % 2 != 0) isRed = !isRed
-    isRed ? (colorIndex = 1) : (colorIndex = 2)
+    // For brick pattern
+    // let colorIndex: number
+    // if (i % 2 != 0) isRed = !isRed
+    // if (j % 2 != 0) isRed = !isRed
+    // isRed ? (colorIndex = 1) : (colorIndex = 2)
 
     const tile = new Tile(
       boxShape,
@@ -49,7 +51,7 @@ for (let i = 0; i < MURAL_HEIGHT; i++) {
         scale: new Vector3(TILE_SIZE, TILE_SIZE, 0.125),
       }),
       tileIndex,
-      colorIndex
+      // colorIndex // For brick pattern
     )
     tile.setParent(scene)
     tileIndex = tiles.push(tile)
