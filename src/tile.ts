@@ -8,7 +8,7 @@ export let tileNumbers: number[] = []
 
 // Colors to cycle through (7 main colours + white + black)
 const colors: Color3[] = [
-  new Color3(1.2, 1.2, 1.2), // Super white
+  Color3.White(), // White
   Color3.FromHexString('#ff363f'), // Red
   Color3.FromHexString('#ff881f'), // Orange
   Color3.FromHexString('#ffea00'), // Yellow
@@ -35,11 +35,17 @@ export class Tile extends Entity {
   private colorIndex: number = 0
   private tileIndex: number
 
-  constructor(model: BoxShape, transform: Transform, tileIndex: number) {
+  constructor(
+    model: BoxShape,
+    transform: Transform,
+    tileIndex: number,
+    colorIndex?: number
+  ) {
     super()
     engine.addEntity(this)
     this.addComponent(model)
     this.addComponent(transform)
+    if (colorIndex) this.colorIndex = colorIndex
     this.addComponent(materials[this.colorIndex])
 
     // Flip sound when changing tile color

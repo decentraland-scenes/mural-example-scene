@@ -1,4 +1,4 @@
-//const admin = require('firebase-admin')
+const functions = require('firebase-functions')
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -77,3 +77,5 @@ export async function getMuralJSON(url: string): Promise<number[]> {
     return []
   }
 }
+
+exports.app = functions.https.onRequest(app)
