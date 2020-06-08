@@ -42,11 +42,12 @@ export class Tile extends Entity {
     colorIndex?: number
   ) {
     super()
-    engine.addEntity(this)
+
     this.addComponent(model)
     this.addComponent(transform)
     if (colorIndex) this.colorIndex = colorIndex
     this.addComponent(materials[this.colorIndex])
+    engine.addEntity(this)
 
     // Flip sound when changing tile color
     const sound = new Entity()

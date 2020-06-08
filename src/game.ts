@@ -1,5 +1,6 @@
 import { Tile, tiles, tileNumbers } from './tile'
-import { getMural } from './serverHandler'
+import { getMural, muralChanger } from './serverHandler'
+import utils from '../node_modules/decentraland-ecs-utils/index'
 
 // Base scene
 const baseScene = new Entity()
@@ -50,7 +51,7 @@ for (let i = 0; i < MURAL_HEIGHT; i++) {
         position: new Vector3(xPosition, yPosition, 0),
         scale: new Vector3(TILE_SIZE, TILE_SIZE, 0.125),
       }),
-      tileIndex,
+      tileIndex
       // colorIndex // For brick pattern
     )
     tile.setParent(scene)
@@ -76,3 +77,38 @@ async function updateMural() {
     tiles[i].setColor(currentTiles[i])
   }
 }
+
+let triggerBox = new utils.TriggerBoxShape(
+  new Vector3(15, 8, 15),
+  Vector3.Zero()
+)
+
+let trigger = new Entity()
+trigger.addComponent(new Transform({ position: new Vector3(8, 0, 8) }))
+
+trigger.addComponent(
+  new utils.TriggerComponent(
+    triggerBox, //shape
+    0, //layer
+    0, //triggeredByLayer
+    null, //onTriggerEnter
+    null, //onTriggerExit
+    () => {
+      log('triggered refresh')
+      updateMural()
+    },
+    null, //onCameraExit
+    false //true
+  )
+)
+engine.addEntity(trigger)
+
+muralChanger.addComponentOrReplace(
+  new utils.Interval(10000, () => {
+    if (!muralChanger.hasComponent(utils.Delay)) {
+      updateMural()
+    } else {
+      log('not updated bc currently changing')
+    }
+  })
+)

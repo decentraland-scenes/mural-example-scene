@@ -9,9 +9,9 @@ export let fireBaseServer =
 // get lastest mural state
 export async function getMural(): Promise<number[]> {
   try {
-    // if (!playerRealm) {
-    //   await setRealm()
-    // }
+    if (!playerRealm) {
+      await setRealm()
+    }
     let url = awsServer + 'mural/' + playerRealm + '/tiles.json'
     let response = await fetch(url).then()
     let json = await response.json()
@@ -23,9 +23,9 @@ export async function getMural(): Promise<number[]> {
 
 // update mural
 export async function changeMural() {
-  // if (!playerRealm) {
-  //   await setRealm()
-  // }
+  if (!playerRealm) {
+    await setRealm()
+  }
   muralChanger.addComponentOrReplace(
     // Only send request if no more changes come over the next second
     new utils.Delay(1000, async function () {
@@ -47,5 +47,5 @@ export async function changeMural() {
 }
 
 // dummy entity to throttle the sending of change requests
-let muralChanger = new Entity()
+export let muralChanger = new Entity()
 engine.addEntity(muralChanger)
