@@ -5,11 +5,6 @@ const app = express()
 app.use(cors({ origin: true }))
 require('isomorphic-fetch')
 
-export type messageBoard = {
-  name: string
-  messages: string[]
-}
-
 app.get('/hello-world', (req: any, res: any) => {
   return res.status(200).send('Hello World!')
 })
