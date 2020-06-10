@@ -10,14 +10,18 @@ app.get('/hello-world', (req: any, res: any) => {
 
 app.post('/update-mural', async (req: any, res: any) => {
   let tiles = req.body.tiles
-
-  updateMuralJSON(tiles)
+  let realm = req.query.realm
+  updateMuralJSON(tiles, realm)
 
   return res.status(200).send('Updated Mural')
 })
 
 app.get('/mural', async (req: any, res: any) => {
-  let url = 'https://genesis-plaza.s3.us-east-2.amazonaws.com/mural/tiles.json'
+  let realm = req.query.realm
+  let url =
+    'https://genesis-plaza.s3.us-east-2.amazonaws.com/mural/' +
+    realm +
+    '/tiles.json'
 
   let currentMural: number[] = await getMuralJSON(url)
 
@@ -37,11 +41,11 @@ AWS.config.update({
   region: 'us-east-2',
 })
 
-export async function updateMuralJSON(tiles: number[]) {
+export async function updateMuralJSON(tiles: number[], realm: string) {
   var upload = new AWS.S3.ManagedUpload({
     params: {
       Bucket: 'genesis-plaza',
-      Key: 'mural/tiles.json',
+      Key: 'mural/' + realm + '/tiles.json',
       Body: JSON.stringify({ tiles: tiles }),
       ACL: 'public-read',
       ContentType: 'application/json; charset=utf-8',
