@@ -3,7 +3,6 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 app.use(cors({ origin: true }))
-require('isomorphic-fetch')
 
 app.get('/hello-world', (req: any, res: any) => {
   return res.status(200).send('Hello World!')
