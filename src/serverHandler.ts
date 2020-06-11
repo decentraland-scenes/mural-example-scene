@@ -2,9 +2,9 @@ import { tileNumbers } from './tile'
 import { setRealm, playerRealm } from './realmData'
 import utils from '../node_modules/decentraland-ecs-utils/index'
 
-export let awsServer = 'https://genesis-plaza.s3.us-east-2.amazonaws.com/'
+export let awsServer = 'https://soho-plaza.s3.us-east-2.amazonaws.com/'
 export let fireBaseServer =
-  'https://us-central1-genesis-plaza.cloudfunctions.net/app/'
+  'https://us-central1-soho-plaza.cloudfunctions.net/app/'
 
 // get lastest mural state
 export async function getMural(): Promise<number[]> {
