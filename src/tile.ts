@@ -56,7 +56,7 @@ export class Tile extends Entity {
       new AudioSource(new AudioClip('sounds/navigationForward.mp3'))
     )
     engine.addEntity(sound)
-    sound.setParent(Attachable.PLAYER)
+    sound.setParent(Attachable.FIRST_PERSON_CAMERA)
 
     // Tile ID
     this.tileIndex = tileIndex
