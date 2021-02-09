@@ -1,6 +1,6 @@
 import { Tile, tiles, tileNumbers } from './tile'
 import { getMural, muralChanger } from './serverHandler'
-import utils from '../node_modules/decentraland-ecs-utils/index'
+import * as utils from '@dcl/ecs-scene-utils'
 
 // Base scene
 const baseScene = new Entity()
@@ -87,19 +87,12 @@ let trigger = new Entity()
 trigger.addComponent(new Transform({ position: new Vector3(8, 0, 8) }))
 
 trigger.addComponent(
-  new utils.TriggerComponent(
-    triggerBox, //shape
-    0, //layer
-    0, //triggeredByLayer
-    null, //onTriggerEnter
-    null, //onTriggerExit
-    () => {
+  new utils.TriggerComponent(triggerBox, {
+    onCameraEnter: () => {
       log('triggered refresh')
       updateMural()
     },
-    null, //onCameraExit
-    false //true
-  )
+  })
 )
 engine.addEntity(trigger)
 
