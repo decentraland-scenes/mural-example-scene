@@ -2,9 +2,9 @@ import { changeMural } from './serverHandler'
 
 // Setup for multiplayer
 export const sceneMessageBus = new MessageBus()
-export let tiles: Tile[] = []
+export const tiles: Tile[] = []
 
-export let tileNumbers: number[] = []
+export const tileNumbers: number[] = []
 
 // Colors to cycle through (7 main colours + white + black)
 const colors: Color3[] = [
@@ -70,7 +70,7 @@ export class Tile extends Entity {
             tileIndex: this.tileIndex,
             colorIndex: this.colorIndex,
           })
-          changeMural()
+          changeMural().catch((error) => log(error))
         },
         { button: ActionButton.POINTER, hoverText: 'Change Color' }
       )

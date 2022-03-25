@@ -41,8 +41,8 @@ for (let i = 0; i < MURAL_HEIGHT; i++) {
   for (let j = 0; j < MURAL_WIDTH; j++) {
     // For brick pattern
     // let colorIndex: number
-    // if (i % 2 != 0) isRed = !isRed
-    // if (j % 2 != 0) isRed = !isRed
+    // if (i % 2 !== 0) isRed = !isRed
+    // if (j % 2 !== 0) isRed = !isRed
     // isRed ? (colorIndex = 1) : (colorIndex = 2)
 
     const tile = new Tile(
@@ -63,10 +63,10 @@ for (let i = 0; i < MURAL_HEIGHT; i++) {
   yPosition -= TILE_SIZE + 0.02
 }
 
-updateMural()
+updateMural().catch((error) => log(error))
 
 async function updateMural() {
-  let currentTiles = await getMural()
+  const currentTiles = await getMural()
 
   log(currentTiles)
   for (let i = 0; i < currentTiles.length; i++) {
@@ -78,19 +78,19 @@ async function updateMural() {
   }
 }
 
-let triggerBox = new utils.TriggerBoxShape(
+const triggerBox = new utils.TriggerBoxShape(
   new Vector3(15, 8, 15),
   Vector3.Zero()
 )
 
-let trigger = new Entity()
+const trigger = new Entity()
 trigger.addComponent(new Transform({ position: new Vector3(8, 0, 8) }))
 
 trigger.addComponent(
   new utils.TriggerComponent(triggerBox, {
     onCameraEnter: () => {
       log('triggered refresh')
-      updateMural()
+      updateMural().catch((error) => log(error))
     },
   })
 )
@@ -99,7 +99,7 @@ engine.addEntity(trigger)
 muralChanger.addComponentOrReplace(
   new utils.Interval(10000, () => {
     if (!muralChanger.hasComponent(utils.Delay)) {
-      updateMural()
+      updateMural().catch((error) => log(error))
     } else {
       log('not updated bc currently changing')
     }
